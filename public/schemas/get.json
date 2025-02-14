@@ -1,0 +1,32 @@
+[
+    {
+        "name": "[crm_contacto]",
+        "type": "chatwoot",
+        "text": "SELECT contacts.id, contacts.name, contacts.email, contacts.additional_attributes, contacts.identifier, contacts.custom_attributes, contacts.last_name, contacts.middle_name, contacts.location, contacts.country_code, contacts.blocked, contacts.last_activity_at FROM contacts WHERE id=$1 LIMIT 1",
+        "values": ["contact_id"]
+    },
+    {
+        "name": "[crm_calendario]",
+        "type": "chatwoot",
+        "text": "SELECT crm_event.title, crm_event.message, crm_event.start, crm_event.finish, crm_event.allday, contacts.name FROM crm_event INNER JOIN contacts ON crm_event.contact_id=contacts.id WHERE contact_id=$1",
+        "values": ["contact_id"]
+      },
+      {
+        "name": "[crm_marketing]",
+        "type": "chatwoot",
+        "text": "SELECT crm_envios.id, crm_envios.title, crm_envios.message, crm_envios.enabled, crm_envios.media, crm_envios.type, inboxes.name as inbox_crm FROM crm_envios INNER JOIN inboxes ON crm_envios.inbox_id=inboxes.id WHERE chatwoot_id=$1",
+        "values": ["chatwoot_id"]
+      },
+      {
+        "name": "[crm_fecha]",
+        "type": "chatwoot",
+        "text": "SELECT $1::date",
+        "values": ["fecha_hora"]
+      },
+      {
+        "name": "[wp_productos]",
+        "type": "wordpress",
+        "text": "/wp-json/chatwoot/v1/products",
+        "values": ["limit"]
+      }
+]

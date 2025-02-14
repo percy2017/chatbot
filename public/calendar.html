@@ -1,0 +1,136 @@
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Calendario</button>
+      <button class="nav-link" id="nav-view-tab" data-bs-toggle="tab" data-bs-target="#nav-view" type="button" role="tab" aria-controls="nav-view" aria-selected="false">Lista</button>
+    </div>
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div id="calendar"></div>
+    </div>
+    <div class="tab-pane fade" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab">
+        <div class="table-responsive">
+            <table class="table" id="myTable">
+                <thead>
+                <tr>
+                    <!-- <th> ID </th> -->
+                    <th> idExt </th>
+                    <th> title </th>
+                    <th> message </th>
+                    <th> contact </th>
+                    <th> date </th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $( document ).ready(async function() {
+        let post = await axios.post("/api/get",{
+            type: "calendar",
+            // limit: 99,
+            option: "list"
+        })
+     
+        // console.log(post.data)
+        let calendarEl = document.getElementById('calendar')
+        let mievent = []
+        for (let index = 0; index < post.data.length; index++) {
+            const element = post.data[index].data;
+            element.id = post.data[index].id
+            mievent.push(element)
+            $('#myTable > tbody').append("<tr><td>"+post.data[index].id_external+"<br><a href='#' onclick='miedit("+post.data[index].id_external+")' >Edit</a></td><td>"+post.data[index].data.title+"</td><td>"+post.data[index].data.message+"</td><td>"+post.data[index].data.contact_name+"</td><td>"+post.data[index].data.start+"</td></tr>");
+        }
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            themeSystem: 'bootstrap',
+            timeZone: 'America/La_Paz',
+            locale: 'es',
+            navLinks: true,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            navLinks: true, // can click day/week names to navigate views
+            selectable: true,
+            selectMirror: true,
+            editable: false,
+            dayMaxEvents: true, // allow "more" link when too many events
+            events: mievent,
+            select: function(arg) {
+                // console.log(arg)
+                localStorage.setItem("mievent", JSON.stringify({
+                    allDay: arg.allDay,
+                    end: new Date(arg.end).toISOString().split('.')[0],
+                    start: new Date(arg.start).toISOString().split('.')[0],
+                    option: "create"
+                }))
+                $.ajax({
+                    url: "/partials/calendar.html",
+                    // aSync: false,
+                    dataType: "html",
+                    success: function(data) {
+                        // localStorage.removeItem("mievent")
+                        $("#miapp").html(data)
+                    }
+                })
+            },
+            eventClick: function(arg) {
+                // console.log(arg.event)
+                localStorage.setItem("mievent", JSON.stringify({
+                    id: arg.event._def.publicId,
+                    contact_id: arg.event._def.extendedProps.contact_id,
+                    contact_name: arg.event._def.extendedProps.contact_name,
+                    contact_phone: arg.event._def.extendedProps.contact_phone,
+                    whatsapp: arg.event._def.extendedProps.whatsapp,
+                    id_external: arg.event._def.extendedProps.id_external,
+                    message: arg.event._def.extendedProps.message,
+                    title: arg.event._def.title,
+                    allDay: arg.event._def.allDay,
+                    end: new Date(arg.event._instance.range.end).toISOString().split('.')[0],
+                    start: new Date(arg.event._instance.range.start).toISOString().split('.')[0],
+                    option: "update"
+                }))
+                // let midata = JSON.parse(localStorage.getItem("mievent"))
+                // console.log(JSON.parse(localStorage.getItem("mievent")))
+                $.ajax({
+                    url: "/partials/calendar.html",
+                    aSync: false,
+                    dataType: "html",
+                    success: function(data) {                
+                        $("#miapp").html(data)
+                    }
+                })
+            },
+        })
+        calendar.render()
+
+        // console.log(mievent)
+        $('#myTable').DataTable({
+            // bLengthChange: false,
+            // // info: false
+            order: [[0, 'desc']]
+        })
+    })
+
+async function miedit(id) {
+    console.log(id)
+    let midata = await axios.post("/api/get",{
+        type: "calendar",
+        option: "view",
+        id_external: id
+    })
+    // console.log(midata.data)
+    localStorage.setItem("mievent", JSON.stringify(midata.data.data))
+    $.ajax({
+        url: "/partials/calendar.html",
+        dataType: "html",
+        success: function(data) {                
+            $("#miapp").html(data)
+        }
+    })
+}
+</script>

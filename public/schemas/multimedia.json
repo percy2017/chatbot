@@ -1,0 +1,123 @@
+{
+    "schema":{
+        "data_url": {
+            "type": "string",
+            "title": "Data url",
+            "required": true
+        },
+        "thumb_url": {
+            "type": "string",
+            "title": "Thumb url",
+            "required": true
+        },
+        "height": {
+            "type": "integer",
+            "title": "Heigth"
+        },
+        "width": {
+            "type": "integer",
+            "title": "Width"
+        },
+        "file_size": {
+            "type": "integer",
+            "title": "File size"
+        },
+        "file_type": {
+            "type": "string",
+            "title": "File type"
+        },
+        "message_id": {
+            "type": "integer",
+            "title": "Message id"
+        },
+        "extension": {
+            "type": "string",
+            "title": "Extension"
+        },
+        "identifier": {
+            "type": "string",
+            "title": "Contacto"
+        },
+        "message": {
+            "type": "string",
+            "title": "message"
+        },
+        "whatsapp": {
+            "type": "string",
+            "title": "whatsapp"
+        }
+    },
+    "form": [
+        {
+            "key": "data_url",
+            "type": "text",
+            "htmlClass": "col-6",
+            "placeholder": "nombre del calendario",
+            "id": "data_url"
+        },
+        {
+            "key": "thumb_url",
+            "type": "text",
+            "htmlClass": "col-6",
+            "placeholder": "nombre del calendario"
+        },
+        {
+            "key": "height",
+            "type": "number",
+            "htmlClass": "col-4"
+        },
+        {
+            "key": "width",
+            "type": "number",
+            "htmlClass": "col-4"
+        },
+        {
+            "key": "file_size",
+            "type": "number",
+            "htmlClass": "col-4"
+        },
+        {
+            "key": "file_type",
+            "type": "text",
+            "htmlClass": "col-4",
+            "id": "file_type"
+        },
+        {
+            "key": "message_id",
+            "type": "number",
+            "htmlClass": "col-4"
+        },
+        {
+            "key": "extension",
+            "type": "text",
+            "htmlClass": "col-4"
+        },
+        {
+            "type": "line"
+        },
+        {
+            "key": "identifier",
+            "type": "text",
+            "htmlClass": "col-6",
+            "id": "identifier"
+        },
+        {
+            "key": "whatsapp",
+            "type": "text",
+            "htmlClass": "col-6",
+            "id": "whatsapp"
+        },
+        {
+            "key": "message",
+            "type": "textarea",
+            "htmlClass": "col-12",
+            "id": "message"
+        },
+        {
+            "type": "button",
+            "title": "Notificar",
+            "htmlClass": "btn-outline-success col-3 m-3",
+            "id": "btn-send"
+        }
+    ]
+}

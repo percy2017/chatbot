@@ -1,0 +1,69 @@
+
+<form id="form"></form>
+
+<script>
+    
+    // let form_values = null
+    $( document ).ready(async function() {
+        let post = await axios.post("/api/get",{
+            type: "setting",
+            limit: 1,
+            option: "list"
+        })
+        $.getJSON("./schemas/setting.json", function(schema){
+
+            schema.value = post.data[0].data
+            let miform = $( "#form" ).jsonForm(schema)
+            $("form").on("submit", async function (e) {
+                e.preventDefault()
+                let save = await axios.post("/api/post", {
+                    id: post.data[0].id,
+                    data: $('#form').jsonFormValue(),
+                    option: "update"
+                })
+                // console.log("mivimiento")
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Accion realizada con exito",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                minavegation()
+            })
+
+            $('#btn-back').click(function(){
+                minavegation()
+            })
+
+            $("#inbox_default").on( "keyup", async function(e) {
+            // console.log(this.value+" | "+e.keyCode)
+            var midata = await axios.post("/api/chatwoot", {
+                type: "inboxes",
+                option: 'search',
+                value: this.value
+            })
+            console.log(midata.data)
+            let miarray = []
+            let contact_id = 0
+            for (let index = 0; index < midata.data.length; index++) {
+                miarray.push({
+                    id: midata.data[index].id,
+                    name: midata.data[index].name,
+                    channel_type: midata.data[index].channel_type
+                })
+            }
+            $( "#inbox_default" ).autocomplete({
+                source: miarray.map(({ id, name, channel_type }) => (  { label: (id+" | "+name+" | "+channel_type), value: name, name: name, channel_type: channel_type}  )),
+                select: function (event, ui) {
+                    // $("#contact_name").val(ui.item.name)
+                    // $("#contact_phone").val(ui.item.phone_number)
+                }
+            })
+        })
+        }).fail(function(){
+            console.log("An error has occurred.");
+        })
+    })
+
+</script>

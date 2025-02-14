@@ -1,0 +1,110 @@
+{
+  "schema": {
+    "chatwoot_id": {
+      "type": "integer",
+      "title": "Chatwoot ID",
+      "required": true
+    },
+    "chatwoot_url": {
+      "type": "string",
+      "title": "Chatwoot Url",
+      "required": true
+    },
+    "chatwoot_token": {
+      "type": "string",
+      "title": "Token User",
+      "required": true
+    },
+    "chatwoot_widget": {
+      "type": "string",
+      "title": "Token widget",
+      "required": true
+    },
+    "chatwoot_rows": {
+      "type": "string",
+      "title": "Chatwoot filas",
+      "required": true
+    },
+    "wordpress_url": {
+      "type": "string",
+      "title": "Wordpress url"
+    },    
+    "wordpress_rows": {
+      "type": "string",
+      "title": "Wordpress filas"
+    },
+    "whatsapp_default": {
+      "type": "string",
+      "title": "Whatsapp default"
+    },
+    "whatsapp_code": {
+      "type": "string",
+      "title": "Whatsapp code"
+    }
+    
+  },
+  "form": [
+    {
+      "key": "chatwoot_id",
+      "htmlClass": "col-6"
+    },
+    {
+      "key": "chatwoot_token",
+      "htmlClass": "col-6"
+    },
+    {
+      "key": "chatwoot_url",
+      "htmlClass": "col-6"
+    },
+    {
+      "key": "chatwoot_widget",
+      "htmlClass": "col-6"
+    },
+    {
+      "key": "chatwoot_rows",
+      "htmlClass": "col-6",
+      "type": "number",
+      "value": 30
+    },
+    {
+      "type": "line"
+    },
+    {
+      "key": "wordpress_url",
+      "htmlClass": "col-6"
+    },
+    {
+      "key": "wordpress_rows",
+      "htmlClass": "col-6",
+      "type": "number",
+      "value": 10
+    },
+    {
+      "type": "line"
+    },
+    {
+      "key": "whatsapp_default",
+      "htmlClass": "col-6",
+      "id": "whatsapp_default"
+    },
+    {
+      "key": "whatsapp_code",
+      "htmlClass": "col-6",
+      "id": "whatsapp_code"
+    },
+    {
+      "type": "line"
+    },
+    {
+      "type": "submit",
+      "value": "Actualizar",
+      "htmlClass": "col-2 m-2"
+    },
+    {
+      "type": "button",
+      "title": "Volver",
+      "htmlClass": "btn-outline-secundary col-2 m-2",
+      "id": "btn-back"
+  }
+  ]
+}

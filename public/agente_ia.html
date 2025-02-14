@@ -1,0 +1,94 @@
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Prompt BASE</button>
+      <button class="nav-link" id="nav-view-tab" data-bs-toggle="tab" data-bs-target="#nav-view" type="button" role="tab" aria-controls="nav-view" aria-selected="false">Acciones GET</button>
+      <button class="nav-link" id="nav-accion-tab" data-bs-toggle="tab" data-bs-target="#nav-accion" type="button" role="tab" aria-controls="nav-accion" aria-selected="false">Acciones POST</button>
+    </div>
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <form id="form"></form>
+    </div>
+    <div class="tab-pane fade" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab">
+        <select name="" id="select_accion_get" class="form-control">
+            <option value="0">opciones</option>
+        </select> 
+        <pre id="pre_accion_get"></pre>
+    </div>
+    <div class="tab-pane fade" id="nav-accion" role="tabpanel" aria-labelledby="nav-accion-tab">
+        <select name="" id="select_accion_post" class="form-control">
+            <option value="0">opciones</option>
+        </select> 
+        <pre id="pre_accion_post"></pre>
+    </div>
+</div>
+
+
+<script>
+    $( document ).ready(async function() {
+        let post = await axios.post("/api/get",{
+            type: "prompt",
+            limit: 1
+        })
+        $.getJSON("./schemas/prompt.json", function(schema){
+            schema.value=post.data[0].data
+            let miform = $( "#form" ).jsonForm(schema)
+            $("form").on("submit", async function (e) {
+                e.preventDefault()
+
+                let save = await axios.post("/api/post", {
+                    id: post.data[0].id,
+                    data: $('#form').jsonFormValue(),
+                    option: "update"
+                })
+
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Accion realizada con exito",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                minavegation()
+            })
+        }).fail(function(){
+            console.log("An error has occurred.");
+        });
+    })
+    $.getJSON("./schemas/get.json", function(query){
+        for (let index = 0; index < query.length; index++) {
+            $('#select_accion_get').append(new Option(query[index].name, JSON.stringify(query[index])))
+        }
+        $("#select_accion_get").change(async function(){
+            let midata = await axios.post("/api/post", {
+                    id: 0,
+                    data: this.value,
+                    option: "shortcode"
+                })
+            $("#pre_accion_get").jsonViewer(midata.data)
+        })
+    })
+
+    $.getJSON("./schemas/template.json", function(prompt){
+        // console.log(prompt)
+        for (let index = 0; index < prompt.length; index++) {
+            $('#select_accion_prompt').append(new Option(prompt[index].name, prompt[index].prompt))
+        }
+        $("#select_accion_prompt").change(async function(){
+            $("textarea").val(this.value)
+        })
+    })
+
+    $.getJSON("./schemas/post.json", function(post){
+        // console.log(post)
+        for (let index = 0; index < post.length; index++) {
+            $('#select_accion_post').append(new Option(post[index].name, JSON.stringify(post[index].function)))
+        }
+        $("#select_accion_post").change(async function(){
+            // $("textarea").val(this.value)
+            // console.log(this.value)
+            $("#pre_accion_post").jsonViewer(JSON.parse(this.value))
+        })
+    })
+</script>

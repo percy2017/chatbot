@@ -1,0 +1,115 @@
+[
+    {
+        "name": "#contacto",
+        "description": "esquema para realizar el BACEL buscar, actualizar, crear, eliminar y leer",
+        "type": "function",
+        "additionalProperties": false,
+        "function": {
+            "name": "#contacto",
+            "parameters": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "phone_number",
+                    "option",
+                    "name",
+                    "email",
+                    "account_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "ID del contacto del CRM"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "nombre del contacto o usuario del CRM"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "correo electronico del contacto o usuario del CRM"
+                    },
+                    "option": {
+                        "enum": [
+                            "buscar",
+                            "actualizar",
+                            "crear",
+                            "eliminar",
+                            "leer"
+                        ],
+                        "type": "string",
+                        "description": "opcion para realizar la consultar a la base de datos de contacto o usuarios del CRM"
+                    },
+                    "account_id": {
+                        "type": "number",
+                        "description": "id de la cuenta en el CRM"
+                    },
+                    "phone_number": {
+                        "type": "string",
+                        "description": "telefono del contacto o usuario del CRM"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "name": "#marketing",
+        "description": "Esquema para realizar el BREAD al modulo de marketing del CRM",
+        "type": "function",
+        "additionalProperties": false,
+        "function": {
+            "name": "#marketing",
+            "parameters": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "ID del marketing en el CRM"
+                    },
+                    "opcion": {
+                        "enum": [
+                            "buscar",
+                            "actualizar",
+                            "crear",
+                            "eliminar",
+                            "leer"
+                        ],
+                        "type": "string",
+                        "description": "opcion para realizar la consultar a la base de datos de contacto o usuarios del CRM"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "name": "#calendario",
+        "description": "Esquema para realizar el BREAD al modulo de calendario del CRM",
+        "type": "function",
+        "additionalProperties": false,
+        "function": {
+            "name": "#calendario",
+            "parameters": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "ID del calendario en el CRM"
+                    },
+                    "opcion": {
+                        "enum": [
+                            "buscar",
+                            "actualizar",
+                            "crear",
+                            "eliminar",
+                            "leer"
+                        ],
+                        "type": "string",
+                        "description": "opcion para realizar la consultar a la base de datos de contacto o usuarios del CRM"
+                    }
+                }
+            }
+        }
+    }
+]

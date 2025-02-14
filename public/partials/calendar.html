@@ -1,0 +1,193 @@
+
+<form id="form"></form>
+
+<script>
+    $.getJSON("./schemas/calendar.json", function(schema){
+        let midata = JSON.parse(localStorage.getItem("mievent"))
+        // console.log(midata)
+        schema.value = midata
+        let miform = $( "#form" ).jsonForm(schema)
+        let mioption = (midata.option == "create") ? "create" : "update"
+        
+        $("form").on("submit", async function (e) {
+            e.preventDefault()
+            let save = await axios.post("/api/post", {
+                // id: post.data[0].id,
+                data: $('#form').jsonFormValue(),
+                option: mioption,
+                id: midata.id,
+                type: "calendar"
+            })
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Accion realizada con exito",
+                showConfirmButton: false,
+                timer: 2000
+            })
+            minavegation("calendario")
+        })
+        $('#btn-back').click(function(){
+            minavegation("calendario")
+        })
+        $('#btn-delete').click(async function(){
+            await axios.post("/api/post", {
+                id: midata.id,
+                option: "delete"
+            })
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Accion realizada con exito",
+                showConfirmButton: false,
+                timer: 2000
+            })
+            minavegation("calendario")
+
+        })
+        $('#btn-send').click(async function(){
+            var misend = await axios.post("/api/send", {
+                contact_id: $("#contact_id").val(),
+                message: $("#message").val(),
+                whatsapp: $("#whatsapp").val(),
+                // option: "text"
+            })
+            // console.log(misend)
+            if (misend.statusText == "OK") {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Accion realizada con exito",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                minavegation("calendario")
+            } else {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "error en la accion",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            }
+
+        })
+        if (midata.option == "create") {
+            $("#btn-send").attr("hidden", true)
+            $("#btn-delete").attr("hidden", true)
+            $("#whatsapp").attr("hidden", true)
+        }
+        $("#contact_id").on( "keyup", async function(e) {
+            // console.log(this.value+" | "+e.keyCode)
+            var midata = await axios.post("/api/chatwoot", {
+                type: "contacts",
+                option: 'search',
+                value: this.value
+            })
+            let miarray = []
+            let contact_id = 0
+            for (let index = 0; index < midata.data.length; index++) {
+                miarray.push({
+                    id: midata.data[index].id,
+                    name: midata.data[index].name,
+                    phone_number: midata.data[index].phone_number,
+                    identifier: midata.data[index].identifier
+                })
+            }
+            $( "#contact_id" ).autocomplete({
+                source: miarray.map(({ id, name, phone_number, identifier }) => (  { label: (id+" | "+name+" | "+phone_number), value: id, name: name, phone_number: identifier}  )),
+                select: function (event, ui) {
+                    $("#contact_name").val(ui.item.name)
+                    $("#contact_phone").val(ui.item.phone_number)
+                }
+            })
+        })
+        $('#btn-send').click(async function(){
+            var misend = await axios.post("/api/send", {
+                contact_id: $("#contact_id").val(),
+                message: $("#message").val(),
+                whatsapp: $("#whatsapp").val(),
+                // option: "text"
+            })
+            // console.log(misend)
+            if (misend.statusText == "OK") {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Accion realizada con exito",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                minavegation("calendario")
+            } else {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "error en la accion",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            }
+
+        })
+        if (midata.option == "create") {
+            $("#btn-send").attr("hidden", true)
+            $("#btn-delete").attr("hidden", true)
+            $("#whatsapp").attr("hidden", true)
+        }
+        $("#contact_id").on( "keyup", async function(e) {
+            // console.log(this.value+" | "+e.keyCode)
+            var midata = await axios.post("/api/chatwoot", {
+                type: "contacts",
+                option: 'search',
+                value: this.value
+            })
+            let miarray = []
+            let contact_id = 0
+            for (let index = 0; index < midata.data.length; index++) {
+                miarray.push({
+                    id: midata.data[index].id,
+                    name: midata.data[index].name,
+                    phone_number: midata.data[index].phone_number,
+                    identifier: midata.data[index].identifier
+                })
+            }
+            $( "#contact_id" ).autocomplete({
+                source: miarray.map(({ id, name, phone_number, identifier }) => (  { label: (id+" | "+name+" | "+phone_number), value: id, name: name, phone_number: identifier}  )),
+                select: function (event, ui) {
+                    $("#contact_name").val(ui.item.name)
+                    $("#contact_phone").val(ui.item.phone_number)
+                }
+            })
+        })
+
+        $("#whatsapp").on( "keyup", async function(e) {
+            // console.log(this.value+" | "+e.keyCode)
+            var midata = await axios.post("/api/chatwoot", {
+                type: "inboxes",
+                option: 'search',
+                value: this.value
+            })
+            console.log(midata.data)
+            let miarray = []
+            let contact_id = 0
+            for (let index = 0; index < midata.data.length; index++) {
+                miarray.push({
+                    id: midata.data[index].id,
+                    name: midata.data[index].name,
+                    channel_type: midata.data[index].channel_type
+                })
+            }
+            $( "#whatsapp" ).autocomplete({
+                source: miarray.map(({ id, name, channel_type }) => (  { label: (id+" | "+name+" | "+channel_type), value: name, name: name, channel_type: channel_type}  )),
+                select: function (event, ui) {
+                    // $("#contact_name").val(ui.item.name)
+                    // $("#contact_phone").val(ui.item.phone_number)
+                }
+            })
+        })
+    }).fail(function(){
+        console.log("An error has occurred.");
+    })
+</script>

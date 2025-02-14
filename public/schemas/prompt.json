@@ -1,0 +1,116 @@
+{
+  "form": [
+    {
+      "key": "prompt_main",
+      "type": "textarea",
+      "height": "300px",
+      "htmlClass": "col-12"
+    },
+    {
+      "key": "prompt_image",
+      "type": "text",
+      "htmlClass": "col-12"
+    },
+    {
+      "type": "line"
+    },
+    {
+      "key": "token_api",
+      "type": "text",
+      "htmlClass": "col-12"
+    },
+    {
+      "key": "action_post",
+      "htmlClass": "col-4",
+      "inlinetitle": "Auto Evaluar Accion Post"
+    },
+    {
+      "key": "model",
+      "titleMap": {
+        "gpt-4o": "gpt-4o",
+        "gpt-4o-mini": "gpt-4o-mini",
+        "gpt-4-turbo": "gpt-4-turbo"
+      },
+      "htmlClass": "col-4"
+    },
+    {
+      "key": "max_tokens",
+      "type": "number",
+      "htmlClass": "col-4"
+    },
+    {
+      "key": "temperature",
+      "type": "number",
+      "htmlClass": "col-4"
+    },
+    {
+      "key": "top_p",
+      "type": "number",
+      "htmlClass": "col-4"
+    },
+    {
+      "key": "n",
+      "type": "number",
+      "htmlClass": "col-4"
+    },
+    {
+      "type": "line"
+    },
+    {
+      "type": "submit",
+      "value": "Guardar y Enviar",
+      "htmlClass": "col-3"
+    }
+  ],
+  "schema": {
+    "top_p": {
+      "step": 0.1,
+      "type": "integer",
+      "title": "Diversidad(0-1)"
+    },
+    "model": {
+      "enum": [
+        "gpt-4o-mini",
+        "gpt-4o",
+        "gpt-4-turbo"
+      ],
+      "type": "string",
+      "title": "Modelo"
+    },
+    "prompt_image": {
+      "type": "string",
+      "title": "Prompt Image"
+    },
+    "prompt_main": {
+      "type": "string",
+      "title": "Prompt Principal"
+    },
+    "prompt_audio": {
+      "type": "string",
+      "title": "Prompt Audio"
+    },
+    "max_tokens": {
+      "type": "integer",
+      "title": "Max Tokens(64-1024)"
+    },
+    "action_post": {
+      "type": "boolean",
+      "title": " "
+    },
+    "temperature": {
+      "step": 0.1,
+      "type": "integer",
+      "title": "Temperatura(0-1)"
+    },
+    "token_api": {
+      "type": "string",
+      "title": "Token ChatGPT",
+      "required": true
+    },
+    "n": {
+      "step": 1,
+      "type": "integer",
+      "title": "n Respuestas (1-3)"
+    }
+  }
+}

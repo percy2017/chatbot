@@ -1,0 +1,136 @@
+{
+    "schema":{
+        "title": {
+            "type": "string",
+            "title": "Titulo",
+            "required": true
+        },
+        "id_external": {
+            "type": "integer",
+            "title": "ID extero"
+        },
+        "contact_id": {
+            "type": "integer",
+            "title": "Contacto ID"
+        },
+        "contact_name": {
+            "type": "string",
+            "title": "Nombre"
+        },
+        "contact_phone": {
+            "type": "string",
+            "title": "Telefono"
+        },
+        "start": {
+            "type": "string",
+            "title": "Inicio",
+            "required": true
+        },
+        "end": {
+            "type": "string",
+            "title": "Final",
+            "required": true
+        },
+        "allDay": {
+            "type": "boolean",
+            "title": " ",
+            "default": true
+        },
+        "message": {
+            "type": "string",
+            "title": "Mensaje"
+        },
+        "whatsapp": {
+            "type": "string",
+            "title": "Whatsapp"
+        }
+    },
+    "form": [
+        {
+            "key": "title",
+            "type": "text",
+            "htmlClass": "col-8",
+            "placeholder": "nombre del calendario"
+        },
+        {
+            "key": "id_external",
+            "type": "number",
+            "htmlClass": "col-4"
+        },
+
+
+        {
+            "key": "start",
+            "type": "datetime-local",
+            "htmlClass": "col-4"
+        },
+        {
+            "key": "end",
+            "type": "datetime-local",
+            "htmlClass": "col-4"
+        },
+        {
+            "key": "allDay",
+            "htmlClass": "col-4",
+            "inlinetitle": " Todo el Dia"
+        },
+        {
+            "key": "contact_id",
+            "type": "text",
+            "htmlClass": "col-4",
+            "id": "contact_id"
+        },
+        {
+            "key": "contact_name",
+            "type": "text",
+            "htmlClass": "col-4",
+            "id": "contact_name"
+        },
+        {
+            "key": "contact_phone",
+            "type": "text",
+            "htmlClass": "col-4",
+            "id": "contact_phone"
+        },
+        {
+            "key": "message",
+            "type": "textarea",
+            "height": "120px",
+            "htmlClass": "col-12",
+            "id": "message"
+        },
+        {
+            "key": "whatsapp",
+            "type": "text",
+            "htmlClass": "col-4",
+            "id": "whatsapp"
+        },
+        {
+            "type": "button",
+            "title": "Notificar",
+            "htmlClass": "btn-outline-success col-2 mt-4",
+            "id": "btn-send"
+        },
+        {
+            "type": "line"
+        },
+        {
+            "type": "submit",
+            "value": "Guardar",
+            "htmlClass": "btn-outline-primary col-2 m-2",
+            "id" : "btn-save"
+        },
+        {
+            "type": "button",
+            "title": "Eliminar",
+            "htmlClass": "btn-outline-danger col-2 m-2",
+            "id": "btn-delete"
+        },
+        {
+            "type": "button",
+            "title": "Volver",
+            "htmlClass": "btn-outline-secundary col-2 m-2",
+            "id": "btn-back"
+        }
+    ]
+}

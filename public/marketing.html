@@ -1,0 +1,76 @@
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Campañas</button>
+      <button class="nav-link" id="nav-view-tab" data-bs-toggle="tab" data-bs-target="#nav-view" type="button" role="tab" aria-controls="nav-view" aria-selected="false">Formulario</button>
+    </div>
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="table-responsive">
+            <table class="table" id="myTable">
+                <thead>
+                <tr>
+                    <!-- <th>#</th> -->
+                    <th> Titulo </th>
+                    <th> Estado </th>
+                    <th> Entrada </th>
+                    <th> Etiqueta </th>
+                    <!-- <th> Min </th> -->
+                    <th> Fecha </th>
+                    <!-- <th> Accion </th> -->
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab">
+        <form id="form"></form>
+    </div>
+</div>
+
+<script>
+
+    $( document ).ready(async function() {
+
+    })
+    $('#myTable').DataTable({
+        // bLengthChange: false,
+        // info: false
+        layout: {
+        topStart: {
+            buttons: [
+                {
+                    text: 'My button',
+                    action: function (e, dt, node, config) {
+                        alert('Button activated');
+                    }
+                }
+            ]
+        }
+    }
+    })
+    $.getJSON("./schemas/marketing.json", function(schema){
+        // schema.value = post.data[0].data
+        let miform = $( "#form" ).jsonForm(schema)
+        $("form").on("submit", async function (e) {
+            e.preventDefault()
+            // let save = await axios.post("/api/post", {
+            //     id: post.data[0].id,
+            //     data: $('#form').jsonFormValue(),
+            //     option: "update"
+            // })
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Accion realizada con exito",
+                showConfirmButton: false,
+                timer: 2000
+            })
+            minavegation()
+        })
+    }).fail(function(){
+        console.log("An error has occurred.");
+    })
+</script>

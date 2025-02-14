@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    
+    <title>PanelBot v1.0</title>
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/json-view.css">
+
+    <link rel="stylesheet" href="//cdn.datatables.net/2.1.7/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
+  </head>
+  <body>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-2 mb-4 border-bottom">
+          <!-- <div id="title"></div> -->
+          <div id="breadcrumb"></div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+            <label class="form-check-label" for="darkModeSwitch">Dark Mode</label>
+          </div>
+        </div>
+      </div>
+      <div id="miapp"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="js/underscore.js"></script>
+    <script src="js/jsonform.js"></script>
+    <script src="js/ace.js"></script>
+    <script src="js/mode-json.js"></script>
+    <script src="js/jsv.js"></script>
+    <script src="js/spectrum.js"></script>
+    <script src="js/mode-css.js"></script>
+    <script src="js/mode-javascript.js"></script>
+    <script src='js/calendar.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src='js/json-view.js'></script>
+
+    <script src="//cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.1/js/buttons.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.1/js/dataTables.buttons.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+            const htmlElement = document.documentElement;
+            const switchElement = document.getElementById('darkModeSwitch');
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const currentTheme = localStorage.getItem('bsTheme') || (prefersDarkScheme ? 'dark' : 'light');
+
+            htmlElement.setAttribute('data-bs-theme', currentTheme);
+            switchElement.checked = currentTheme === 'dark';
+
+            switchElement.addEventListener('change', function () {
+                const newTheme = this.checked ? 'dark' : 'light';
+                htmlElement.setAttribute('data-bs-theme', newTheme);
+                localStorage.setItem('bsTheme', newTheme);
+            });
+
+            // Tooltip aktivieren
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+        minavegation()
+        function minavegation(menu) { 
+    
+          switch (menu) {
+            case 'configuracion':
+              $.ajax({
+                url: "configuracion.html",
+                aSync: false,
+                dataType: "html",
+                success: function(data) {
+                    $("#miapp").html(data)
+                }
+              })
+              break;
+            case 'marketing':
+              $.ajax({
+                url: "marketing.html",
+                aSync: false,
+                dataType: "html",
+                success: function(data) {
+                    $("#miapp").html(data)
+                }
+              })
+              break;      
+            case 'multimedia':
+              $.ajax({
+                url: "multimedia.html",
+                aSync: false,
+                dataType: "html",
+                success: function(data) {
+                    $("#miapp").html(data)
+                }
+              })
+              break;
+            case 'instrucciones':
+              $.ajax({
+                url: "agente_ia.html",
+                aSync: false,
+                dataType: "html",
+                success: function(data) {
+                    $("#miapp").html(data)
+                }
+              })
+              $.ajax({
+                url: "prompt/index.html",
+                aSync: false,
+                dataType: "html",
+                success: function(data) {
+                    $("#miapp2").html(data)
+                }
+              })
+              break;
+            case 'calendario':
+              $.ajax({
+                url: "calendar.html",
+                aSync: false,
+                dataType: "html",
+                success: function(data) {
+                  $("#miapp").html(data)
+                }
+              })
+              break;
+            default:
+              $.ajax({
+                url: "home.html",
+                aSync: false,
+                dataType: "html",
+                success: function(data) {
+                    $("#miapp").html(data)
+                    // $("#title").html("<h1 class='h2'>INICIO</h2>")
+                    // $("#breadcrumb").html("<nav style='--bs-breadcrumb-divider: '';' aria-label='breadcrumb'><ol class='breadcrumb'><li class='breadcrumb-item'><a href='#''>Home</a></li><li class='breadcrumb-item active' aria-current='page'>Library</li></ol></nav>")
+                    // $("#breadcrumb").html("")
+                }
+              })
+
+              break;
+          }
+          // console.log(menu)
+          let mititle = menu ? menu.toUpperCase() : ""
+          // $("#title").html("<h1 class='h2'>"+mititle+"</h2>")
+            $("#breadcrumb").html("<nav style='--bs-breadcrumb-divider: '';' aria-label='breadcrumb'><ol class='breadcrumb m-2'><li class='breadcrumb-item'><a href='#' onclick='minavegation()'>INICIO</a></li><li class='breadcrumb-item active' aria-current='page'>"+mititle+"</li></ol></nav>")
+        }
+
+
+      // window.chatwootSettings = {"position":"right","type":"expanded_bubble","launcherTitle":"Asistente para chatwoot"};
+      // (async function(d,t) {
+
+      //   let post = await axios.post("/api/get",{
+      //         type: "setting",
+      //         limit: 1
+      //     })
+      //   let midata = post.data[0].data
+
+      //   var BASE_URL=midata.chatwoot_url;
+      //   var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      //   g.src=BASE_URL+"/packs/js/sdk.js";
+      //   g.defer = true;
+      //   g.async = true;
+      //   s.parentNode.insertBefore(g,s);
+      //   g.onload=function(){
+      //     window.chatwootSDK.run({
+      //       websiteToken: midata.chatwoot_widget,
+      //       baseUrl: BASE_URL
+      //     })
+      //   }
+      // })(document,"script");
+      
+    
+    </script>
+  </body>
+</html>

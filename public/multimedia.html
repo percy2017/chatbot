@@ -1,0 +1,232 @@
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Galeria</button>
+      <button class="nav-link" id="nav-view-tab" data-bs-toggle="tab" data-bs-target="#nav-view" type="button" role="tab" aria-controls="nav-view" aria-selected="false">Formulario</button>
+    </div>
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div id="migaleria"></div>
+        <button class="btn btn-outline-warning" onclick="miscroll()">Cargar Multimedia</button>
+    </div>
+    <div class="tab-pane fade" id="nav-view" role="tabpanel" aria-labelledby="nav-view-tab">
+        <form id="form"></form>
+    </div>
+</div>
+
+
+
+<script>
+    var mipage = 1
+    var miitem = 10
+
+    $( document ).ready(async function() {
+
+    })
+    $.ajax({
+        type: "POST",
+        url: "/api/chatwoot",
+        data: JSON.stringify({ 
+            type: "media",
+            option: "list",
+            limit: miitem,
+            offset: mipage
+        }),
+        dataType: "json",
+        contentType: 'application/json',
+        success: function(response){
+            let micard = ""
+            let micount = 1
+            for (let index = 0; index < response.length; index++) {
+                let mijson = JSON.stringify(response[index])
+                switch (response[index].file_type) {
+                    case 'image':
+                        micard = micard + "<div id='"+response[index].id+"' onclick='miview("+response[index].id+")' class='col-sm-3' data-json='"+mijson+"'><div class='card'><code>"+response[index].file_type+" | #"+response[index].id+"</code><img src='"+response[index].thumb_url+"' /></div></div>"
+                        break;
+                    case 'video':
+                        micard = micard + "<div id='"+response[index].id+"' onclick='miview("+response[index].id+")' class='col-sm-3' data-json='"+mijson+"'><div class='card'><code>"+response[index].file_type+" | #"+response[index].id+"</code><video src='"+response[index].data_url+"' controls></video></div></div>"
+                        break;
+                    case 'audio':
+                        micard = micard + "<div id='"+response[index].id+"' onclick='miview("+response[index].id+")' class='col-sm-3' data-json='"+mijson+"'><div class='card'><code>"+response[index].file_type+" | #"+response[index].id+"</code><video src='"+response[index].data_url+"' controls></video></div></div>"
+                        break;
+                    default:
+                        micard = micard + "<div class='col-sm-3'><div class='card'><a href='"+response[index].data_url+"' target='_blank'><code>"+response[index].file_type+" | #"+response[index].id+"</code>DESCARGAR ARCHIVO</a></div></div>"
+                        break;
+                }
+                
+                // console.log(micount)
+                if (micount >= 4) {                   
+                    $("#migaleria").append("<div class='row'>"+micard+"</div> <br />")
+                    // $("#migaleria").append(micard)
+                    micount = 0
+                    micard = ""
+                }
+                micount++
+            }
+            $("#migaleria").append("<div class='row'>"+micard+"</div>")
+        }
+    })
+
+    $.ajax({
+        type: "POST",
+        url: "/api/chatwoot",
+        data: JSON.stringify({ 
+            type: "media",
+            option: "conversations"
+        }),
+        dataType: "json",
+        contentType: 'application/json',
+        success: function(response){
+            // console.log(response)
+        }
+    })
+    function miview(id) {
+        let element = document.getElementById(id)
+        var triggerEl = document.getElementById('nav-view-tab')
+        var tabTrigger = new bootstrap.Tab(triggerEl)
+        bootstrap.Tab.getInstance(triggerEl).show()
+
+        $.getJSON("./schemas/multimedia.json", function(schema){
+            schema.value = JSON.parse( element.getAttribute('data-json') )
+            $( "#form" ).empty()
+            let miform = $( "#form" ).jsonForm(schema)
+            $("form").on("submit", async function (e) {
+                e.preventDefault()
+               
+            })
+            $('#btn-send').click(async function(){
+                var misend = await axios.post("/api/send", {
+                    contact_id: $("#contact_id").val(),
+                    data_url: $("#data_url").val(),
+                    message: $("#message").val(),
+                    whatsapp: $("#whatsapp").val(),
+                    file_type: $("#file_type").val()
+                })
+                console.log(misend)
+            })
+            $("#contact_id").on( "keyup", async function(e) {
+                // console.log(this.value+" | "+e.keyCode)
+                var midata = await axios.post("/api/chatwoot", {
+                    type: "contacts",
+                    option: 'search',
+                    value: this.value
+                })
+                let miarray = []
+                let contact_id = 0
+                console.log(midata.data)
+                for (let index = 0; index < midata.data.length; index++) {
+                    miarray.push({
+                        id: midata.data[index].id,
+                        name: midata.data[index].name,
+                        phone_number: midata.data[index].phone_number,
+                        identifier: midata.data[index].identifier
+                    })
+                }
+                $( "#contact_id" ).autocomplete({
+                    source: miarray.map(({ id, name, phone_number, identifier }) => (  { label: (id+" | "+name+" | "+phone_number), value: identifier}  )),
+                    select: function (event, ui) {
+            
+                    }
+                })
+            })
+
+            $("#whatsapp").on( "keyup", async function(e) {
+                // console.log(this.value+" | "+e.keyCode)
+                var midata = await axios.post("/api/chatwoot", {
+                    type: "inboxes",
+                    option: 'search',
+                    value: this.value
+                })
+                // console.log(midata.data)
+                let miarray = []
+                let contact_id = 0
+                for (let index = 0; index < midata.data.length; index++) {
+                    miarray.push({
+                        id: midata.data[index].id,
+                        name: midata.data[index].name,
+                        channel_type: midata.data[index].channel_type
+                    })
+                }
+                $( "#whatsapp" ).autocomplete({
+                    source: miarray.map(({ id, name, channel_type }) => (  { label: (id+" | "+name+" | "+channel_type), value: name, name: name, channel_type: channel_type}  )),
+                    select: function (event, ui) {
+                        // $("#contact_name").val(ui.item.name)
+                        // $("#contact_phone").val(ui.item.phone_number)
+                    }
+                })
+            })
+            $.ajax({
+                type: "POST",
+                url: "/api/chatwoot",
+                data: JSON.stringify({
+                    type: 'boxs'
+                }),
+                dataType: "json",
+                contentType: 'application/json',
+                success: function(response){
+                    // console.log(response)
+                    for (let index = 0; index < response.length; index++) {
+                        $('#whatsapp').append(new Option(response[index].name, response[index].name));
+                    }
+                }
+            });
+        }).fail(function(){
+            console.log("An error has occurred.")
+        })
+    }
+
+    function miscroll() {
+        $.ajax({
+            type: "POST",
+            url: "/api/chatwoot",
+            data: JSON.stringify({ 
+                type: "media",
+                option: "list",
+                // endpoint: "/api/media",
+                limit: miitem,
+                offset: (mipage=mipage+miitem)
+            }),
+            dataType: "json",
+            contentType: 'application/json',
+            success: function(response){
+                // let mihtml = "<div class='row'>"
+                let micard = ""
+                let micount = 1
+                // console.log(response)
+                for (let index = 0; index < response.length; index++) {
+                    
+                    let mijson = JSON.stringify(response[index])
+                    switch (response[index].file_type) {
+                        case 'image':
+                            micard = micard + "<div id='"+response[index].id+"' onclick='miview("+response[index].id+")' class='col-sm-3' data-json='"+mijson+"'><div class='card'><code>"+response[index].file_type+" | #"+response[index].id+"</code><img src='"+response[index].thumb_url+"' /></div></div>"
+                            break;
+                        case 'video':
+                            micard = micard + "<div id='"+response[index].id+"' onclick='miview("+response[index].id+")' class='col-sm-3' data-json='"+mijson+"'><div class='card'><code>"+response[index].file_type+" | #"+response[index].id+"</code><video src='"+response[index].data_url+"'></video></div></div>"
+                            break;
+                        case 'audio':
+                            micard = micard + "<div id='"+response[index].id+"' onclick='miview("+response[index].id+")' class='col-sm-3' data-json='"+mijson+"'><div class='card'><code>"+response[index].file_type+" | #"+response[index].id+"</code><video src='"+response[index].data_url+"' controls></video></div></div>"
+                            break;
+                        default:
+                            micard = micard + "<div class='col-sm-3'><div class='card'><a href='"+response[index].data_url+"' target='_blank'><code>"+response[index].file_type+" | #"+response[index].id+"</code>DESCARGAR ARCHIVO</a></div></div>"
+                            break;
+                    }
+                    
+                    if (micount >= 4) {                   
+                        $("#migaleria").append("<div class='row'>"+micard+"</div> <br />")
+                        micount = 0
+                        micard = ""
+                    }
+                    micount++
+                }
+                $("#migaleria").append("<div class='row'>"+micard+"</div>")
+                window.scrollTo(0, document.body.scrollHeight)
+            }
+            
+        })
+        
+    }
+
+   
+</script>

@@ -1,0 +1,97 @@
+{
+    "schema": {
+        "entrada": {
+            "type": "string",
+            "title": "Entrada",
+            "required": true
+        },
+        "titulo": {
+            "type": "string",
+            "title": "Titulo",
+            "required": true
+        },
+        "estado": {
+            "type": "boolean",
+            "title": " ",
+            "default": true
+        },
+        "mensaje": {
+            "type": "string",
+            "title": "Mensaje",
+            "required": true
+        },
+        "tiempo": {
+            "enum": [
+              "1",
+              "3",
+              "5"
+            ],
+            "type": "string",
+            "title": "Tiempo"
+        },
+        "multimedia": {
+            "type": "string",
+            "title": "Link media"
+        },
+        "tipo": {
+            "enum": [
+                "image",
+                "video",
+                "document"
+              ],
+            "type": "string",
+            "title": "Tipo"
+        }
+    },
+    "form": [
+        {
+            "key": "entrada",
+            "htmlClass": "col-4"
+        },
+        {
+            "key": "titulo",
+            "htmlClass": "col-4"
+        },
+        {
+            "key": "estado",
+            "htmlClass": "col-4",
+            "inlinetitle": " Estado"
+        },
+        {
+            "key": "mensaje",
+            "htmlClass": "col-12",
+            "type": "textarea",
+            "height": "120px"
+        },
+        {
+            "key": "multimedia",
+            "htmlClass": "col-6"
+        },
+        {
+            "key": "tiempo",
+            "titleMap": {
+              "1": "1 min",
+              "3": "3 min",
+              "5": "5 min"
+            },
+            "htmlClass": "col-3"
+        },
+        {
+            "key": "tipo",
+            "titleMap": {
+              "image": "image",
+              "video": "video",
+              "document": "document"
+            },
+            "htmlClass": "col-3"
+        },
+        {
+            "type": "line"
+        },
+        {
+            "type": "submit",
+            "value": "Actualizar",
+            "htmlClass": "col-3 m-2"
+        }
+    ]
+}
