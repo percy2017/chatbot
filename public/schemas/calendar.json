@@ -9,10 +9,6 @@
             "type": "integer",
             "title": "ID extero"
         },
-        "contact_id": {
-            "type": "integer",
-            "title": "Contacto ID"
-        },
         "contact_name": {
             "type": "string",
             "title": "Nombre"
@@ -75,21 +71,19 @@
             "inlinetitle": " Todo el Dia"
         },
         {
-            "key": "contact_id",
-            "type": "text",
-            "htmlClass": "col-4",
-            "id": "contact_id"
+            "type": "line"
         },
+
         {
             "key": "contact_name",
             "type": "text",
-            "htmlClass": "col-4",
+            "htmlClass": "col-6",
             "id": "contact_name"
         },
         {
             "key": "contact_phone",
             "type": "text",
-            "htmlClass": "col-4",
+            "htmlClass": "col-6",
             "id": "contact_phone"
         },
         {

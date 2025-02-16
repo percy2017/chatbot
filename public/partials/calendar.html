@@ -4,7 +4,7 @@
 <script>
     $.getJSON("./schemas/calendar.json", function(schema){
         let midata = JSON.parse(localStorage.getItem("mievent"))
-        // console.log(midata)
+        //console.log(midata) 
         schema.value = midata
         let miform = $( "#form" ).jsonForm(schema)
         let mioption = (midata.option == "create") ? "create" : "update"

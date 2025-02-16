@@ -117,14 +117,17 @@
     })
 
 async function miedit(id) {
-    console.log(id)
+    // console.log(id)
     let midata = await axios.post("/api/get",{
         type: "calendar",
         option: "view",
         id_external: id
     })
-    // console.log(midata.data)
-    localStorage.setItem("mievent", JSON.stringify(midata.data.data))
+    //console.log("save mievent" + JSON.stringify(midata.data.data))
+    let mievent = midata.data.data
+    mievent.id = midata.data.id
+    //console.log(mievent)
+    localStorage.setItem("mievent", JSON.stringify(mievent))
     $.ajax({
         url: "/partials/calendar.html",
         dataType: "html",

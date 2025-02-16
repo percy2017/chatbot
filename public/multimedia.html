@@ -98,16 +98,24 @@
             })
             $('#btn-send').click(async function(){
                 var misend = await axios.post("/api/send", {
-                    contact_id: $("#contact_id").val(),
+                    identifier: $("#identifier").val(),
                     data_url: $("#data_url").val(),
                     message: $("#message").val(),
                     whatsapp: $("#whatsapp").val(),
                     file_type: $("#file_type").val()
                 })
-                console.log(misend)
+                // console.log(misend)
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Accion realizada con exito",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                minavegation()
             })
-            $("#contact_id").on( "keyup", async function(e) {
-                // console.log(this.value+" | "+e.keyCode)
+            $("#identifier").on( "keyup", async function(e) {
+                console.log(this.value+" | "+e.keyCode)
                 var midata = await axios.post("/api/chatwoot", {
                     type: "contacts",
                     option: 'search',
@@ -115,7 +123,7 @@
                 })
                 let miarray = []
                 let contact_id = 0
-                console.log(midata.data)
+                // console.log(midata.data)
                 for (let index = 0; index < midata.data.length; index++) {
                     miarray.push({
                         id: midata.data[index].id,
@@ -124,7 +132,7 @@
                         identifier: midata.data[index].identifier
                     })
                 }
-                $( "#contact_id" ).autocomplete({
+                $( "#identifier" ).autocomplete({
                     source: miarray.map(({ id, name, phone_number, identifier }) => (  { label: (id+" | "+name+" | "+phone_number), value: identifier}  )),
                     select: function (event, ui) {
             

@@ -42,9 +42,16 @@
         topStart: {
             buttons: [
                 {
-                    text: 'My button',
+                    text: 'Nuevo',
                     action: function (e, dt, node, config) {
-                        alert('Button activated');
+                        $.ajax({
+                            url: "partials/marketing.html",
+                            aSync: false,
+                            dataType: "html",
+                            success: function(data) {s
+                                $("#miapp").html(data)
+                            }
+                        })
                     }
                 }
             ]
